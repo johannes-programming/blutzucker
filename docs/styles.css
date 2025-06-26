@@ -1,0 +1,26 @@
+dl.medication-block {
+    border: 0.125em solid black;
+    margin: 0.75em 0;
+    padding: 0.75em;
+}
+dl.medication-block > dt {
+    background-color: transparent;
+    font-size: 1.75em;
+    font-weight: normal;
+    margin: 0 0 0.5em 0;
+    padding: 0;
+}
+dl.medication-block > dd {
+    margin: 0 0 1em 1em;
+    padding: 0;
+}
+
+.unit-input {
+    display: block;
+    margin: 8px 0;
+}
+
+.med-label {
+    display: inline-block;
+    width: 7.5em;
+}

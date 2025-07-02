@@ -71,12 +71,15 @@ function createTable(cfg, tableName, tableData){
 
             for (const col2 in cfg[t]) {
                 for (const row2 in cfg[t][col2]) {
-                const ratio = cfg[t][col2][row2];
-                const computed = (newVal * ratio) / baseRatio;
-                const key = `${row2}|${col2}`;
-                if (inputs[key] && inputs[key] !== input) {
-                    inputs[key].value = computed.toFixed(2);
-                }
+                    updateBodyCellInput(
+                        inputs, 
+                        input,
+                        cfg, 
+                        t, 
+                        col2, 
+                        row2, 
+                        newVal, 
+                        baseRatio);
                 }
             }
             });
@@ -90,6 +93,24 @@ function createTable(cfg, tableName, tableData){
 
     table.appendChild(tbody);
     container.appendChild(table);
+}
+
+function updateBodyCellInput(
+    inputs, 
+    input,
+    cfg, 
+    title, 
+    col2, 
+    row2, 
+    newVal, 
+    baseRatio){
+    const ratio = cfg[title][col2][row2];
+    const computed = (newVal * ratio) / baseRatio;
+    const rounded = computed.toPrecision(4);
+    const key = `${row2}|${col2}`;
+    if (inputs[key] && inputs[key] !== input) {
+        inputs[key].value = rounded;
+    }
 }
 
 async function build() {

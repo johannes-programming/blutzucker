@@ -18,7 +18,7 @@ function createTable(cfg, tableName, tableData){
     const titleCell = document.createElement("td");
     titleCell.colSpan = columns.length + 1;
     titleCell.textContent = tableName;
-    titleCell.classList.add("title");
+    titleCell.classList.add("title-cell");
     titleRow.appendChild(titleCell);
     tbody.appendChild(titleRow);
 

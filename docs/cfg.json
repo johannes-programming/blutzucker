@@ -1,22 +1,74 @@
 {
-  "example": {
-    "spiced": {
-      "foo": 2,
-      "bar": 4
+    "Glucose": {
+        "":{
+            "g": 180.0,
+            "mol": 1.0,
+            "KE": 18.0
+        }
     },
-    "ham": {
-      "foo": 6,
-      "bar": 8
-    }
-  },
-  "demo": {
-    "apple": {
-      "one": 5,
-      "two": 10
+    "Blutzucker":{
+        "":{
+            "mg/dL":100.0,
+            "mmol/L":5.6,
+            "IU Insulin bei DMT1":2.5,
+            "IU Insulin bei DMT2":3.3333333333,
+            "IU Insulin bei Steroiddiabetes":6.6666666666
+        }
     },
-    "banana": {
-      "one": 15,
-      "two": 20
+    "Diazepam": {
+        "":{
+            "mg": 12.5,
+            "μmol":43.8996979701,
+            "ml":1,
+            "gtt":37.5
+        }
+    },
+    "Haloperidol":{
+        "":{
+            "mg":2.0,
+            "μmol":5.3211302081,
+            "ml":1.0,
+            "gtt":20.0
+        }
+    },
+    "Nozinan":{
+        "":{
+            "mg":40.0,
+            "μmol":121.7767223795,
+            "ml":1.0,
+            "gtt":40.0
+        }
+    },
+    "Clopixol":{
+        "":{
+            "mg":20.0,
+            "μmol":49.8790433199,
+            "ml":1.0,
+            "gtt":20.0
+        }
+    },
+    "Tramadol hydrochlorid": {
+        "":{
+            "mg":100.0,
+            "μmol":333.5112059765,
+            "ml":1.0,
+            "gtt":40.0
+        }
+    },
+    "Laxoberon":{
+        "":{
+            "mg":7.5,
+            "μmol":15.0174202074,
+            "ml":1.0,
+            "gtt":30.0
+        }
+    },
+    "Paspertin": {
+        "":{
+            "mg":4.0,
+            "µmol":11.8955570095,
+            "ml":1.0,
+            "gtt":12
+        }
     }
-  }
 }

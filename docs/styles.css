@@ -15,12 +15,12 @@ td, th {
   font-weight: bold;
 }
 
-.header {
+.header-cell {
   background-color: magenta;
   color: white;
 }
 
-.index {
+.index-cell {
   background-color: cyan;
 }
 

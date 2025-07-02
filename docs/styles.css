@@ -1,26 +1,33 @@
-dl.medication-block {
-    border: 0.125em solid black;
-    margin: 0.75em 0;
-    padding: 0.75em;
-}
-dl.medication-block > dt {
-    background-color: transparent;
-    font-size: 1.75em;
-    font-weight: normal;
-    margin: 0 0 0.5em 0;
-    padding: 0;
-}
-dl.medication-block > dd {
-    margin: 0 0 1em 1em;
-    padding: 0;
+table {
+  border-collapse: collapse;
+  margin: 20px;
 }
 
-.unit-input {
-    display: block;
-    margin: 8px 0;
+td, th {
+  border: 1px solid #000;
+  padding: 5px;
+  text-align: center;
 }
 
-.med-label {
-    display: inline-block;
-    width: 7.5em;
+.title {
+  background-color: blue;
+  color: white;
+  font-weight: bold;
+}
+
+.header {
+  background-color: magenta;
+  color: white;
+}
+
+.index {
+  background-color: cyan;
+}
+
+.body-cell {
+  background-color: white;
+}
+
+input[type="number"] {
+  width: 60px;
 }

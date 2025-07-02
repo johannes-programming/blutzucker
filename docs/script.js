@@ -1,99 +1,104 @@
-async function loadConfigAndBuildUI() {
-    const response = await fetch('cfg.json');
-    const cfg = await response.json();
+let cfg;
 
-    for (const [drug, units] of Object.entries(cfg.conv)) {
-        createMedicationBlock(drug, units, cfg);
-    }
-}
+fetch("cfg.json")
+  .then((response) => response.json())
+  .then((json) => {
+    cfg = json;
+    createTables(cfg);
+  });
 
+function createTables(cfg) {
+  const container = document.getElementById("tables-container");
 
-function createMedicationBlock(drug, units, cfg) {
-    const calc_dl = document.createElement('dl');
-    calc_dl.className = 'medication-block';
-    const calc_dt = document.createElement('dt');
-    calc_dt.innerHTML = drug.toString();
-    const calc_dd = document.createElement('dd');
+  for (const [tableName, tableData] of Object.entries(cfg)) {
+    const columns = Object.keys(tableData);
+    const rowsSet = new Set();
 
-    const inputs = createUnitInputs(drug, units, calc_dd);
-    for (const [unitName, inputEl] of Object.entries(inputs)) {
-        setupConversionHandler(drug, unitName, inputEl, inputs, cfg);
-    }
-    calc_dl.appendChild(calc_dt);
-    calc_dl.appendChild(calc_dd);
-    
-    const container = document.getElementById('container');
-    container.appendChild(calc_dl);
-}
+    columns.forEach(col => {
+      Object.keys(tableData[col]).forEach(row => rowsSet.add(row));
+    });
 
+    const rows = Array.from(rowsSet);
+    const table = document.createElement("table");
 
-function createUnitInputs(drug, units, block) {
+    const tbody = document.createElement("tbody");
+
+    // Title Row
+    const titleRow = document.createElement("tr");
+    const titleCell = document.createElement("td");
+    titleCell.colSpan = columns.length + 1;
+    titleCell.textContent = tableName;
+    titleCell.classList.add("title");
+    titleRow.appendChild(titleCell);
+    tbody.appendChild(titleRow);
+
+    // Header Row
+    const headerRow = document.createElement("tr");
+    const emptyHeader = document.createElement("th");
+    headerRow.appendChild(emptyHeader);
+    columns.forEach(col => {
+      const th = document.createElement("th");
+      th.textContent = col;
+      th.classList.add("header");
+      headerRow.appendChild(th);
+    });
+    tbody.appendChild(headerRow);
+
     const inputs = {};
-    for (const unit of Object.keys(units)) {
-        inputs[unit] = createLabeledInput(drug, unit, block);
-    }
-    return inputs;
+
+    // Data Rows
+    rows.forEach(row => {
+      const tr = document.createElement("tr");
+      const indexCell = document.createElement("th");
+      indexCell.textContent = row;
+      indexCell.classList.add("index");
+      tr.appendChild(indexCell);
+
+      columns.forEach(col => {
+        const td = document.createElement("td");
+        td.classList.add("body-cell");
+
+        const input = document.createElement("input");
+        input.type = "number";
+        input.step = "any";
+
+        const baseValue = tableData[col][row];
+        input.value = baseValue;
+        input.dataset.row = row;
+        input.dataset.col = col;
+        input.dataset.table = tableName;
+
+        inputs[`${row}|${col}`] = input;
+
+        input.addEventListener("input", (e) => {
+          const newVal = parseFloat(e.target.value);
+          const r = e.target.dataset.row;
+          const c = e.target.dataset.col;
+          const t = e.target.dataset.table;
+
+          const baseRatio = cfg[t][c][r];
+          if (isNaN(baseRatio) || baseRatio === 0 || isNaN(newVal)) return;
+
+          for (const col2 in cfg[t]) {
+            for (const row2 in cfg[t][col2]) {
+              const ratio = cfg[t][col2][row2];
+              const computed = (newVal * ratio) / baseRatio;
+              const key = `${row2}|${col2}`;
+              if (inputs[key] && inputs[key] !== input) {
+                inputs[key].value = computed.toFixed(2);
+              }
+            }
+          }
+        });
+
+        td.appendChild(input);
+        tr.appendChild(td);
+      });
+
+      tbody.appendChild(tr);
+    });
+
+    table.appendChild(tbody);
+    container.appendChild(table);
+  }
 }
-
-
-function createLabeledInput(drug, unit, block) {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'unit-input';
-
-    const label = document.createElement('label');
-    label.className = 'med-label';
-    label.textContent = unit.toString();
-    label.setAttribute('for', `${drug}-${unit}`);
-
-    const input = document.createElement('input');
-    input.type = 'number';
-    input.id = `${drug}-${unit}`;
-
-    wrapper.appendChild(input);
-    wrapper.appendChild(label);
-    block.appendChild(wrapper);
-
-    return input;
-}
-
-
-
-
-function setupConversionHandler(drug, unitName, inputEl, inputs, cfg) {
-    inputEl.addEventListener('input', () =>
-        listening(drug, unitName, inputEl, inputs, cfg)
-    );
-}
-
-
-function listening(drug, unitName, inputEl, inputs, cfg) {
-    const val = parseFloat(inputEl.value);
-    const fromRatio = cfg.conv[drug][unitName];
-    for (const [targetUnit, targetEl] of Object.entries(inputs)) {
-        if (targetUnit === unitName) {continue;}
-        const toRatio = cfg.conv[drug][targetUnit];
-        const converted = (val / fromRatio) * toRatio;
-        targetEl.value = floatToStr(converted);
-    }
-}
-
-
-function strToFloat(value) {
-    const trimmed = value.trim();
-    if (trimmed === "") {return 0.0;}
-    return parseFloat(trimmed);
-}
-function floatToStr(value) {
-    const rounded = Number.parseFloat(value.toPrecision(4));
-    return rounded.toString();
-}
-
-
-function main() {
-    addMetaAndLinkTags();
-    loadConfigAndBuildUI().catch(console.error);
-    addMetaAndLinkTags();
-}
-
-
-main();

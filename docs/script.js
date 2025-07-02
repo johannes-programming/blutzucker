@@ -1,11 +1,5 @@
 let cfg;
 
-fetch("cfg.json")
-  .then((response) => response.json())
-  .then((json) => {
-    cfg = json;
-    createTables(cfg);
-  });
 
 function createTables(cfg) {
   const container = document.getElementById("tables-container");
@@ -102,3 +96,14 @@ function createTables(cfg) {
     container.appendChild(table);
   }
 }
+
+function main(){
+    fetch("cfg.json")
+  .then((response) => response.json())
+  .then((json) => {
+    cfg = json;
+    createTables(cfg);
+  });
+}
+
+main();
